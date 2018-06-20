@@ -1,6 +1,7 @@
 package com.a14mob.empresa.empresa.fragments
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.a14mob.empresa.empresa.MainActivity
 import com.a14mob.empresa.empresa.PermissionUtils
 
 
@@ -78,6 +80,7 @@ class AvaliacoesFragment : Fragment() {
             override fun onSuccess() {
 
             }
+
             override fun onError(e: Exception) {
 
             }
@@ -85,27 +88,36 @@ class AvaliacoesFragment : Fragment() {
 
         score(profissionalId.toInt(), meta.toInt())
 
+        imgProfissional.setOnClickListener {
+            var mainActivity = activity as MainActivity
+            mainActivity.buscaFoto()
+        }
+
 
     }
 
-    fun carregarInformacoes(avaliacoes: List<Avaliacao>){
+    fun setFoto(foto: Bitmap){
+        imgProfissional.setImageBitmap(foto)
+    }
+
+    fun carregarInformacoes(avaliacoes: List<Avaliacao>) {
 
 
         val recyclerView = avaliacoes_list_recyclerview
 
-            recyclerView.adapter = AvaliacaoAdapter(avaliacoes, this@AvaliacoesFragment.context!!)
+        recyclerView.adapter = AvaliacaoAdapter(avaliacoes, this@AvaliacoesFragment.context!!)
 
-            val layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-            recyclerView.layoutManager = layoutManager
+        val layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+        recyclerView.layoutManager = layoutManager
 
     }
 
-    fun score(profissionalId: Int, meta:Int){
+    fun score(profissionalId: Int, meta: Int) {
 
-        PermissionUtils.api.scoreProfissionalAvaliacao(profissionalId,meta)
+        PermissionUtils.api.scoreProfissionalAvaliacao(profissionalId, meta)
                 .enqueue(object : Callback<List<Avaliacao>> {
                     override fun onResponse(call: Call<List<Avaliacao>>?, response: Response<List<Avaliacao>>?) {
-                        if (this@AvaliacoesFragment.isVisible == true){
+                        if (this@AvaliacoesFragment.isVisible == true) {
                             this@AvaliacoesFragment.carregarInformacoes(response?.body() as List<Avaliacao>)
                         }
 
@@ -118,5 +130,6 @@ class AvaliacoesFragment : Fragment() {
                 })
 
     }
+
 
 }// Required empty public constructor

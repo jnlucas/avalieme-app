@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
 
         login.setOnClickListener {
 
-            verificarLogin();
+            verificarLogin()
         }
 
 
