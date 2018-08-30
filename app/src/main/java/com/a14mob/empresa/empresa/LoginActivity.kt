@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
 
     fun verificaProfissional(): Int {
 
-        fieldCpf = cpf.text.toString()
+        fieldCpf = cpf.editText?.text.toString()
 
         PermissionUtils.api.buscarProfissional(fieldCpf)
                 .enqueue(object : Callback<Profissional> {

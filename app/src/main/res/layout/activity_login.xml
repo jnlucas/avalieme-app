@@ -7,6 +7,13 @@
     tools:context=".LoginActivity"
     tools:layout_editor_absoluteY="81dp">
 
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bgactivity"
+        android:alpha=".1"/>
+
     <TextView
         android:id="@+id/msgErro"
         android:layout_width="wrap_content"
@@ -19,48 +26,68 @@
         app:layout_constraintStart_toStartOf="@+id/cpf"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <EditText
-        android:id="@+id/cpf"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Informe o CPF"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/msgErro" />
+    <!--<EditText-->
+        <!--android:id="@+id/cpf"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="20dp"-->
+        <!--android:layout_marginEnd="5dp"-->
+        <!--android:layout_marginStart="5dp"-->
+        <!--android:ems="10"-->
+        <!--android:gravity="center"-->
+        <!--android:hint="Informe o CPF"-->
+        <!--android:inputType="textPersonName"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/login"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/msgErro" />-->
 
     <Button
         android:id="@+id/login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="68dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:background="@color/colorPrimaryDark"
         android:text="Entrar"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cpf" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="178dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/msgErro"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="108dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo_inteiro" />
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/cpf"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:gravity="bottom"
+        android:layout_marginTop="8dp"
+        android:textColorHint="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edt_bg"
+            android:gravity="center"
+            android:hint="Digite o CPF"
+            android:textAlignment="center" />
+    </android.support.design.widget.TextInputLayout>
 
 </android.support.constraint.ConstraintLayout>

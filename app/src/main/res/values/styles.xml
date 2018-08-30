@@ -15,4 +15,9 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <!--<style name="bgImagem">-->
+        <!--<item name="android:alpha">0.4</item>-->
+        <!--<item name="android:background">@drawable/bgactivity</item>-->
+    <!--</style>-->
+
 </resources>
