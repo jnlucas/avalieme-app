@@ -12,9 +12,9 @@
         android:title="@string/atividades" />
 
     <item
-        android:id="@+id/navigation_mapa"
-        android:icon="@drawable/ic_action_mapa"
-        android:title="@string/mapa" />
+        android:id="@+id/navigation_quiz"
+        android:icon="@drawable/ic_action_quiz"
+        android:title="@string/quiz" />
 
     <item
         android:id="@+id/navigation_sair"

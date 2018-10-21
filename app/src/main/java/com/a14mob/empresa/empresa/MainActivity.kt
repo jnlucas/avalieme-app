@@ -29,6 +29,7 @@ import android.graphics.Bitmap
 import android.provider.MediaStore
 import android.util.Log
 import com.a14mob.empresa.empresa.entity.Imagem
+import com.a14mob.empresa.empresa.fragments.QuizFragment
 import kotlinx.android.synthetic.main.fragment_avaliacoes.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -58,9 +59,9 @@ class MainActivity : AppCompatActivity() {
 
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_mapa -> {
+            R.id.navigation_quiz -> {
 
-                this.changeFragment(MapaFragment());
+                this.changeFragment(QuizFragment());
 
                 return@OnNavigationItemSelectedListener true
             }

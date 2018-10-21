@@ -1,9 +1,6 @@
 package com.a14mob.empresa.empresa.retrofit
 
-import com.a14mob.empresa.empresa.entity.Avaliacao
-import com.a14mob.empresa.empresa.entity.Imagem
-import com.a14mob.empresa.empresa.entity.Profissional
-import com.a14mob.empresa.empresa.entity.Score
+import com.a14mob.empresa.empresa.entity.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -14,6 +11,7 @@ interface RetroFitRestAPI {
     @FormUrlEncoded()
     @POST("/profissional/api")
     fun buscarProfissional(@Field("cpf") cpf: String): Call<Profissional>
+
 
 
     @GET("/score/{profissional}/{meta}/api")
@@ -38,5 +36,11 @@ interface RetroFitRestAPI {
     @POST("/upload/")
     fun postImage(@Part image: MultipartBody.Part): Call<Imagem>
     //resposta fazer novo POST para atualizar o usuario com URL de resposta
+
+
+    @FormUrlEncoded()
+    @POST("/painel/quiz/list")
+    fun listQuiz(@Field("profissional") profissional: String): Call<Quiz>
+
 
 }

@@ -3,12 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context="com.a14mob.empresa.empresa.fragments.ScoreFragment"
     tools:layout_editor_absoluteY="25dp">
 
     <!-- TODO: Update blank fragment layout -->
 
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bgactivity"
+        android:alpha="0.6"
+        />
     <TextView
         android:id="@+id/metaPontos"
         android:layout_width="wrap_content"
