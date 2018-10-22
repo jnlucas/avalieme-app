@@ -18,6 +18,7 @@ import com.a14mob.empresa.empresa.adapter.RespostaAdapter
 import com.a14mob.empresa.empresa.adapter.ScoreAdapter
 import com.a14mob.empresa.empresa.entity.Avaliacao
 import com.a14mob.empresa.empresa.entity.Quiz
+import com.a14mob.empresa.empresa.entity.Resposta
 import com.a14mob.empresa.empresa.entity.Score
 import com.google.firebase.iid.FirebaseInstanceId
 import com.hendraanggrian.pikasso.picasso
@@ -99,6 +100,7 @@ class QuizFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
 
     }
+
 
 
 

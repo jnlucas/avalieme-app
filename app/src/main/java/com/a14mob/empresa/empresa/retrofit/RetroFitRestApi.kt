@@ -43,4 +43,8 @@ interface RetroFitRestAPI {
     fun listQuiz(@Field("profissional") profissional: String): Call<Quiz>
 
 
+    @FormUrlEncoded()
+    @POST("/painel/resposta/responder")
+    fun responderQuiz(@Field("profissional") profissional: String,@Field("resposta") resposta: String): Call<Quiz>
+
 }
