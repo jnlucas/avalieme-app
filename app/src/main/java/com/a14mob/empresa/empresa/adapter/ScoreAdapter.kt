@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat.startActivity
 
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.Adapter
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +34,6 @@ class ScoreAdapter(private val scores: List<Score>, private val context: Context
 
 
         }
-
 
 
         picasso.load(score.foto.toString()).into(holder.itemView.foto)

@@ -25,6 +25,7 @@
             android:minHeight="80dp"
             android:minWidth="80dp"
             android:src="@mipmap/ic_launcher"
+            android:background="@drawable/boy"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
