@@ -14,7 +14,7 @@
         android:minHeight="50dp"
         android:orientation="horizontal">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/foto"
             android:layout_width="80dp"
             android:layout_height="80dp"
