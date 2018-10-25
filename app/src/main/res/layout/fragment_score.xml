@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bgactivity"
-        android:alpha="0.6"
-        />
+        android:alpha=".1"/>
+
     <TextView
         android:id="@+id/metaPontos"
         android:layout_width="wrap_content"

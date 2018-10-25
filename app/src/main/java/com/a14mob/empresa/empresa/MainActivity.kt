@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
                 // Log.d(TAG, String.valueOf(bitmap));
 
 
-                avalicaoFragment?.setFoto(bitmap)
+                //avalicaoFragment?.setFoto(bitmap)
 
                 val f = File(getCacheDir(), "upload")
                 f.createNewFile()
@@ -157,10 +157,12 @@ class MainActivity : AppCompatActivity() {
     private fun atualizaUrlProfissional(url: String) {
         var edit = getSharedPreferences("PROFISSIONAL", MODE_PRIVATE)
         var id = edit.getString("profissionalId", "")
+
         PermissionUtils.api.sendUrlFoto(id, url).enqueue(object : Callback<Profissional> {
             override fun onResponse(call: Call<Profissional>?, response: Response<Profissional>?) {
                 if (response?.body()?.foto != null) {
-                    edit.edit().putString("foto", response?.body()?.foto)
+                    avalicaoFragment?.setFotoShared(response?.body()?.foto!!)
+                    avalicaoFragment?.carregaFoto(response?.body()?.foto!!)
                 }
             }
 

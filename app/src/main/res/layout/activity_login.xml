@@ -87,6 +87,7 @@
             android:background="@drawable/edt_bg"
             android:gravity="center"
             android:hint="Digite o CPF"
+            android:inputType="text"
             android:textAlignment="center" />
     </android.support.design.widget.TextInputLayout>
 

@@ -1,6 +1,7 @@
 package com.a14mob.empresa.empresa.fragments
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -46,12 +47,13 @@ class AvaliacoesFragment : Fragment() {
     var meta: Int = 0
     var foto: String = ""
     var cpf = ""
+    lateinit var prefs: SharedPreferences
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
 
-        val prefs = inflater.context.getSharedPreferences("PROFISSIONAL", Context.MODE_PRIVATE)
+        prefs = inflater.context.getSharedPreferences("PROFISSIONAL", Context.MODE_PRIVATE)
 
         profissionalId = prefs.getString("profissionalId", null).toInt()
 
@@ -59,7 +61,7 @@ class AvaliacoesFragment : Fragment() {
 
         nome = prefs.getString("nome", null).toString()
 
-        foto = prefs.getString("foto", null).toString()
+        getFotoShared()
 
         cpf = prefs.getString("cpf", null).toString()
 
@@ -70,21 +72,23 @@ class AvaliacoesFragment : Fragment() {
         return inflater?.inflate(R.layout.fragment_avaliacoes, container, false)
     }
 
+    private fun getFotoShared(): String {
+        foto = prefs.getString("foto", null).toString()
+        return foto
+    }
+
+
+    fun setFotoShared(url: String) {
+        val edit = prefs?.edit()
+        edit.putString("foto", url)
+        edit.apply()
+        getFotoShared()
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         pontosProfissional.text = nome.toString()
-
-        picasso.load(foto.toString()).into(imgProfissional, object : com.squareup.picasso.Callback {
-            override fun onSuccess() {
-
-            }
-
-            override fun onError(e: Exception) {
-
-            }
-        })
 
         score(profissionalId.toInt(), meta.toInt())
 
@@ -96,9 +100,18 @@ class AvaliacoesFragment : Fragment() {
 
     }
 
-    fun setFoto(foto: Bitmap){
-        imgProfissional.setImageBitmap(foto)
+
+    override fun onStart() {
+        super.onStart()
+        carregaFoto(getFotoShared())
     }
+
+    fun carregaFoto(foto: String) {
+        picasso.load(foto)
+                .placeholder(R.drawable.boy)
+                .error(R.drawable.boy).into(imgProfissional)
+    }
+
 
     fun carregarInformacoes(avaliacoes: List<Avaliacao>) {
 
@@ -113,7 +126,6 @@ class AvaliacoesFragment : Fragment() {
     }
 
     fun score(profissionalId: Int, meta: Int) {
-
         PermissionUtils.api.scoreProfissionalAvaliacao(profissionalId, meta)
                 .enqueue(object : Callback<List<Avaliacao>> {
                     override fun onResponse(call: Call<List<Avaliacao>>?, response: Response<List<Avaliacao>>?) {

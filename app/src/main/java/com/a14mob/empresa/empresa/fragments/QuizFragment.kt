@@ -76,14 +76,7 @@ class QuizFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
-
-
-
         quiz(profissionalId.toInt(), meta.toInt())
-
-
-
 
     }
 

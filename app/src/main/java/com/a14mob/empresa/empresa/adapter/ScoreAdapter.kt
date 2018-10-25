@@ -29,16 +29,17 @@ class ScoreAdapter(private val scores: List<Score>, private val context: Context
 
         holder?.let {
             it.profissional.text = score.profissional
-            it.pontos.text = score.meta.toString()+"/"+score.pontos.toString()
+            it.pontos.text = score.meta.toString() + "/" + score.pontos.toString()
             it.posicao.text = (position + 1).toString()
 
 
         }
 
 
-        picasso.load(score.foto.toString()).into(holder.itemView.foto)
-
-
+        picasso.load(score.foto)
+                .placeholder(R.drawable.boy)
+                .error(R.drawable.boy)
+                .into(holder.itemView.foto)
 
 
     }
@@ -56,9 +57,6 @@ class ScoreAdapter(private val scores: List<Score>, private val context: Context
     }
 
 
-
-
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val profissional = itemView.nome_prof
@@ -67,26 +65,24 @@ class ScoreAdapter(private val scores: List<Score>, private val context: Context
         val posicao = itemView.posicao
 
 
-
         fun onclick(context: Context, position: Int) {
-
 
 
             profissional.setOnClickListener {
 
                 val shareIntent = Intent()
                 shareIntent.action = Intent.ACTION_SEND
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "Número "+(position + 1).toString()+" do Ranking")
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "Número " + (position + 1).toString() + " do Ranking")
                 shareIntent.type = "text/plain"
 
 
                 context.startActivity(Intent.createChooser(
                         shareIntent,
                         "Meu Ranking"
-                        ))
+                ))
 
-            }}
-
+            }
+        }
 
 
         fun bindView(score: Score) {
@@ -97,16 +93,6 @@ class ScoreAdapter(private val scores: List<Score>, private val context: Context
 
             pontos.text = score.profissional
             pontos.text = score.pontos.toString()
-
-
-            picasso.load(score.foto.toString()).into(imagem, object : Callback {
-                override fun onSuccess() {
-
-                }
-                override fun onError(e: Exception) {
-
-                }
-            })
 
 
         }
