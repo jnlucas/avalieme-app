@@ -2,6 +2,8 @@ package com.a14mob.empresa.empresa.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat.startActivity
 
 import android.support.v7.widget.RecyclerView
@@ -23,6 +25,7 @@ import kotlinx.android.synthetic.main.score_item.view.*
 class ScoreAdapter(private val scores: List<Score>, private val context: Context) : Adapter<ScoreAdapter.ViewHolder>() {
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val score = scores[position]
         holder?.onclick(context, position)
@@ -35,11 +38,16 @@ class ScoreAdapter(private val scores: List<Score>, private val context: Context
 
         }
 
+        var progresso = (100 * score.pontos.toInt()) / score.meta.toInt();
+
 
         picasso.load(score.foto)
                 .placeholder(R.drawable.boy)
                 .error(R.drawable.boy)
                 .into(holder.itemView.foto)
+
+        holder.itemView.customProgress.setProgress(progresso,true)
+
 
 
     }
@@ -91,6 +99,7 @@ class ScoreAdapter(private val scores: List<Score>, private val context: Context
             val imagem = itemView.foto
             val posicao = itemView.posicao
 
+            itemView.customProgress.progress = 100
             pontos.text = score.profissional
             pontos.text = score.pontos.toString()
 

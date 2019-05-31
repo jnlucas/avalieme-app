@@ -18,12 +18,13 @@
             android:id="@+id/foto"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:maxHeight="80dp"
+            android:layout_marginBottom="5dp"
             android:maxWidth="80dp"
-            android:minHeight="80dp"
+            android:maxHeight="80dp"
             android:minWidth="80dp"
+            android:minHeight="80dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -31,50 +32,66 @@
 
         <TextView
             android:id="@+id/nome_prof"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="5dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:textColor="?attr/actionModeSplitBackground"
             android:textSize="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/pontos"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/posicao"
             app:layout_constraintStart_toEndOf="@+id/foto"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Titulo" />
+            tools:text="Nome Profissional" />
 
         <TextView
             android:id="@+id/posicao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_width="20dp"
+            android:layout_height="17dp"
 
-            android:layout_marginEnd="2dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:textSize="12dp"
             app:barrierAllowsGoneWidgets="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Titulo" />
+            app:layout_constraintStart_toEndOf="@+id/nome_prof"
+            app:layout_constraintTop_toTopOf="@+id/nome_prof"
+            tools:text="Posicao" />
+
+
+        <ProgressBar
+            android:id="@+id/customProgress"
+            style="@style/CustomProgressBar"
+            android:layout_width="0dp"
+            android:layout_height="14dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:max="100"
+            android:progress="0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/foto"
+            app:layout_constraintTop_toBottomOf="@+id/pontos" />
+
 
         <TextView
             android:id="@+id/pontos"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
 
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="5dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
             android:gravity="center"
             android:paddingRight="5dp"
             android:textColor="@color/colorAccent"
             android:textSize="18dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/posicao"
             app:layout_constraintStart_toEndOf="@+id/foto"
             app:layout_constraintTop_toBottomOf="@+id/nome_prof"
             tools:text="0" />

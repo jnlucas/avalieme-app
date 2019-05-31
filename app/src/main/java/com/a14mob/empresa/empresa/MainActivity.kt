@@ -26,9 +26,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Parcel
+import android.os.Parcelable
 import android.provider.MediaStore
 import android.util.Log
+import com.a14mob.empresa.empresa.adapter.RespostaAdapter
 import com.a14mob.empresa.empresa.entity.Imagem
+import com.a14mob.empresa.empresa.entity.Quiz
 import com.a14mob.empresa.empresa.fragments.QuizFragment
 import kotlinx.android.synthetic.main.fragment_avaliacoes.*
 import okhttp3.MediaType
@@ -39,7 +43,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity() : AppCompatActivity()  {
 
 
     private val PICK_IMAGE = 100
@@ -73,6 +77,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
         false
+
+    }
+
+    constructor(parcel: Parcel) : this() {
 
     }
 
@@ -182,6 +190,9 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.frame, fragment)
                 .commit()
     }
+
+
+
 
 
 }

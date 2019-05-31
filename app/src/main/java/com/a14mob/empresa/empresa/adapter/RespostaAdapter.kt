@@ -21,6 +21,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.support.v4.app.FragmentActivity
+import android.support.v7.app.AppCompatActivity
 import com.a14mob.empresa.empresa.fragments.AvaliacoesFragment
 
 
@@ -74,6 +75,11 @@ class RespostaAdapter(private val respostas: List<Resposta>, private val context
 
                 enviarResposta(context,resp)
 
+
+
+
+                //listener.onItemClicked()
+
             }}
 
 
@@ -87,9 +93,10 @@ class RespostaAdapter(private val respostas: List<Resposta>, private val context
 
                             if (resposta != null) {
 
-                                //context@QuizFragment().quiz(profissionalId.toInt(), 1)
 
                                 Toast.makeText(context,"Obrigado! Sua opnião é muito importante para nós.",Toast.LENGTH_LONG).show()
+
+
                             }
 
                         }
@@ -113,6 +120,8 @@ class RespostaAdapter(private val respostas: List<Resposta>, private val context
         }
 
     }
+
+
 
 }
 
