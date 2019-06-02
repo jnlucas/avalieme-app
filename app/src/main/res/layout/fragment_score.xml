@@ -3,17 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    tools:context="com.a14mob.empresa.empresa.fragments.ScoreFragment"
-    tools:layout_editor_absoluteY="25dp">
+    android:background="@drawable/bg_activities"
+    tools:context="com.a14mob.empresa.empresa.fragments.ScoreFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bgactivity"
-        android:alpha=".1"/>
 
     <TextView
         android:id="@+id/metaPontos"

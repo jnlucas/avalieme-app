@@ -5,14 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
+    android:background="@drawable/bg_activities"
     tools:layout_editor_absoluteY="81dp">
 
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bgactivity"
-        android:alpha=".1"/>
+
 
     <TextView
         android:id="@+id/msgErro"
@@ -26,21 +23,7 @@
         app:layout_constraintStart_toStartOf="@+id/cpf"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <!--<EditText-->
-        <!--android:id="@+id/cpf"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="20dp"-->
-        <!--android:layout_marginEnd="5dp"-->
-        <!--android:layout_marginStart="5dp"-->
-        <!--android:ems="10"-->
-        <!--android:gravity="center"-->
-        <!--android:hint="Informe o CPF"-->
-        <!--android:inputType="textPersonName"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/login"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/msgErro" />-->
+
 
     <Button
         android:id="@+id/login"
@@ -64,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_app" />
+        android:src="@drawable/logo_app"/>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/cpf"

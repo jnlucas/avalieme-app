@@ -7,34 +7,26 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
-import android.support.v7.widget.Toolbar
-import android.view.Menu
 import com.a14mob.empresa.empresa.entity.Profissional
 import com.a14mob.empresa.empresa.fragments.AvaliacoesFragment
-import com.a14mob.empresa.empresa.fragments.MapaFragment
 import com.a14mob.empresa.empresa.fragments.ScoreFragment
-import com.a14mob.empresa.empresa.retrofit.RetroFitRestAPI
-import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.google.gson.GsonBuilder
-import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_main.*
-import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import android.content.Intent
 import android.graphics.Bitmap
+import android.media.Image
 import android.os.Parcel
-import android.os.Parcelable
 import android.provider.MediaStore
 import android.util.Log
-import com.a14mob.empresa.empresa.adapter.RespostaAdapter
+import android.widget.Toast
+import com.a14mob.empresa.empresa.controller.KeysResponseAPI
+import com.a14mob.empresa.empresa.controller.RetrofitImpl
 import com.a14mob.empresa.empresa.entity.Imagem
-import com.a14mob.empresa.empresa.entity.Quiz
 import com.a14mob.empresa.empresa.fragments.QuizFragment
-import kotlinx.android.synthetic.main.fragment_avaliacoes.*
+import com.google.firebase.iid.FirebaseInstanceId
+import com.orhanobut.hawk.Hawk
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -43,29 +35,38 @@ import java.io.File
 import java.io.FileOutputStream
 
 
-class MainActivity() : AppCompatActivity()  {
+class MainActivity() : AppCompatActivity(), RetrofitImpl.Iresponse {
 
 
     private val PICK_IMAGE = 100
 
-    private var avalicaoFragment: AvaliacoesFragment? = null
+    lateinit var profissional: Profissional
+
+    lateinit var avalicaoFragment: AvaliacoesFragment
+    lateinit var scoreFragment: ScoreFragment
+    lateinit var quizFragment: QuizFragment
+
+    var retrofitImpl = RetrofitImpl().apply {
+        this.responseApi = this@MainActivity
+    }
+
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_score -> {
 
-                this.changeFragment(ScoreFragment())
+                this.changeFragment(scoreFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_atividades -> {
 
-                this.changeFragment(avalicaoFragment!!)
+                this.changeFragment(avalicaoFragment)
 
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_quiz -> {
 
-                this.changeFragment(QuizFragment());
+                this.changeFragment(quizFragment);
 
                 return@OnNavigationItemSelectedListener true
             }
@@ -80,20 +81,28 @@ class MainActivity() : AppCompatActivity()  {
 
     }
 
-    constructor(parcel: Parcel) : this() {
-
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
+
+        profissional = Hawk.get("profissional")
+
+
         avalicaoFragment = AvaliacoesFragment()
+        scoreFragment = ScoreFragment()
+        quizFragment = QuizFragment()
 
         setContentView(R.layout.activity_main)
         this.changeFragment(ScoreFragment());
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        retrofitImpl.atualizaToken(Hawk.get("CPF"), FirebaseInstanceId.getInstance().token.toString())
+        Hawk.delete("CPF")
+
+
+
 
 
         val service = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -142,18 +151,7 @@ class MainActivity() : AppCompatActivity()  {
                 val reqFile = RequestBody.create(MediaType.parse("image/*"), f)
                 val body = MultipartBody.Part.createFormData("upload", f.getName(), reqFile)
 
-                PermissionUtils.api.postImage(body)
-                        .enqueue(object : Callback<Imagem> {
-                            override fun onResponse(call: Call<Imagem>?, response: Response<Imagem>?) {
-                                if (response?.body()?.toString() != null) {
-                                    atualizaUrlProfissional(response.body()?.foto!!)
-                                }
-                            }
-
-                            override fun onFailure(call: Call<Imagem>?, t: Throwable?) {
-                                Log.i("deuMerda", "")
-                            }
-                        })
+                retrofitImpl.enviarFoto(body)
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -162,22 +160,46 @@ class MainActivity() : AppCompatActivity()  {
         }
     }
 
-    private fun atualizaUrlProfissional(url: String) {
-        var edit = getSharedPreferences("PROFISSIONAL", MODE_PRIVATE)
-        var id = edit.getString("profissionalId", "")
+    override fun getResponse(boolean: Boolean, any: Any?, key: KeysResponseAPI) {
+        when (key) {
+            KeysResponseAPI.Token -> {
+                Log.i("Token", boolean.toString())
+            }
 
-        PermissionUtils.api.sendUrlFoto(id, url).enqueue(object : Callback<Profissional> {
-            override fun onResponse(call: Call<Profissional>?, response: Response<Profissional>?) {
-                if (response?.body()?.foto != null) {
-                    avalicaoFragment?.setFotoShared(response?.body()?.foto!!)
-                    avalicaoFragment?.carregaFoto(response?.body()?.foto!!)
+            KeysResponseAPI.envioFotoPerfil -> {
+                if (boolean) {
+                    any?.let {
+                        atualizaUrlProfissional((any as Imagem).foto)
+                    }
+                } else {
+                    mandaToast("Erro ao Atualizar a foto do perfil!")
+                    Log.i(KeysResponseAPI.envioFotoPerfil.name, any.toString())
                 }
             }
+            KeysResponseAPI.envioUrlFoto -> {
+                if (boolean) {
+                    any?.let {
+                        var profissional: Profissional = Hawk.get("profissional")
+                        profissional = it as Profissional
+                        Hawk.put("profissional", profissional)
+                        avalicaoFragment?.sendUrl(profissional.foto)
 
-            override fun onFailure(call: Call<Profissional>?, t: Throwable?) {
-
+                    }
+                }
             }
-        })
+        }
+
+    }
+
+    private fun mandaToast(msg: String) {
+        Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
+    }
+
+
+    private fun atualizaUrlProfissional(url: String) {
+        retrofitImpl.enviarUrlFoto(profissional.id, url)
+        retrofitImpl.responseApi = this@MainActivity
+
     }
 
 
@@ -185,14 +207,10 @@ class MainActivity() : AppCompatActivity()  {
      * altera o fragment
      */
     fun changeFragment(fragment: Fragment) {
-
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame, fragment)
                 .commit()
     }
-
-
-
 
 
 }

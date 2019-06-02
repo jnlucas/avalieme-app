@@ -4,20 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.AvaliacoesFragment"
-    tools:layout_editor_absoluteY="25dp">
+    android:background="@drawable/bg_activities"
+    tools:context=".fragments.AvaliacoesFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha=".1"
-        android:background="@drawable/bgactivity"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
 
     <ImageView
@@ -31,13 +23,13 @@
         android:minHeight="200dp"
         android:minWidth="300dp"
         android:src="@mipmap/ic_launcher_round"
-        app:layout_constraintBottom_toTopOf="@+id/pontosProfissional"
+        app:layout_constraintBottom_toTopOf="@+id/nomeProfissional"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/pontosProfissional"
+        android:id="@+id/nomeProfissional"
         style="@style/Widget.AppCompat.TextView.SpinnerItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,6 +56,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pontosProfissional" />
+        app:layout_constraintTop_toBottomOf="@+id/nomeProfissional" />
 
 </android.support.constraint.ConstraintLayout>

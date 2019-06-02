@@ -41,12 +41,12 @@ class ScoreAdapter(private val scores: List<Score>, private val context: Context
         var progresso = (100 * score.pontos.toInt()) / score.meta.toInt();
 
 
-        picasso.load(score.foto)
+        Picasso.get().load(score.foto)
                 .placeholder(R.drawable.boy)
                 .error(R.drawable.boy)
                 .into(holder.itemView.foto)
 
-        holder.itemView.customProgress.setProgress(progresso,true)
+        //holder.itemView.customProgress.setProgress(progresso,true)
 
 
 

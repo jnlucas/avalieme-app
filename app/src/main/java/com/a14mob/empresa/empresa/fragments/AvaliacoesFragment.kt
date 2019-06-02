@@ -1,8 +1,5 @@
 package com.a14mob.empresa.empresa.fragments
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -16,131 +13,125 @@ import com.a14mob.empresa.empresa.PermissionUtils
 
 
 import com.a14mob.empresa.empresa.R
-import com.a14mob.empresa.empresa.R.id.navigation_score
 import com.a14mob.empresa.empresa.adapter.AvaliacaoAdapter
-import com.a14mob.empresa.empresa.adapter.ScoreAdapter
+import com.a14mob.empresa.empresa.controller.KeysResponseAPI
+import com.a14mob.empresa.empresa.controller.RetrofitImpl
 import com.a14mob.empresa.empresa.entity.Avaliacao
-import com.a14mob.empresa.empresa.entity.Score
-import com.a14mob.empresa.empresa.retrofit.RetroFitRestAPI
-import com.facebook.stetho.okhttp3.StethoInterceptor
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.gson.GsonBuilder
+import com.a14mob.empresa.empresa.entity.Profissional
 import com.hendraanggrian.pikasso.picasso
+import com.orhanobut.hawk.Hawk
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_avaliacoes.*
-import kotlinx.android.synthetic.main.fragment_score.*
-import kotlinx.android.synthetic.main.score_item.view.*
-import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class AvaliacoesFragment : Fragment() {
+class AvaliacoesFragment : Fragment(), RetrofitImpl.Iresponse {
 
-    var nome: String = ""
-    var profissionalId: Int = 0
-    var meta: Int = 0
-    var foto: String = ""
-    var cpf = ""
-    lateinit var prefs: SharedPreferences
+    //    var nome: String = ""
+//    var profissionalId: Int = 0
+//    var meta: Int = 0
+//    var foto: String = ""
+//    var cpf = ""
+//    lateinit var prefs: SharedPreferences
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
 
-        prefs = inflater.context.getSharedPreferences("PROFISSIONAL", Context.MODE_PRIVATE)
+//        prefs = inflater.context.getSharedPreferences("PROFISSIONAL", Context.MODE_PRIVATE)
+//
+//        profissionalId = prefs.getString("profissionalId", null).toInt()
+//
+//        meta = prefs.getString("meta", null).toInt()
+//
+//        nome = prefs.getString("nome", null).toString()
 
-        profissionalId = prefs.getString("profissionalId", null).toInt()
+        //carregaFoto()
 
-        meta = prefs.getString("meta", null).toInt()
-
-        nome = prefs.getString("nome", null).toString()
-
-        getFotoShared()
-
-        cpf = prefs.getString("cpf", null).toString()
-
-
-        PermissionUtils.atualizaToken(cpf, FirebaseInstanceId.getInstance().token.toString())
+//        cpf = prefs.getString("cpf", null).toString()
 
 
         return inflater?.inflate(R.layout.fragment_avaliacoes, container, false)
     }
 
-    private fun getFotoShared(): String {
-        foto = prefs.getString("foto", null).toString()
-        return foto
-    }
-
-
-    fun setFotoShared(url: String) {
-        val edit = prefs?.edit()
-        edit.putString("foto", url)
-        edit.apply()
-        getFotoShared()
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        pontosProfissional.text = nome.toString()
+        nomeProfissional.text = (activity as MainActivity).profissional.nome
 
-        score(profissionalId.toInt(), meta.toInt())
+
+        buscarAvaliacoes()
 
         imgProfissional.setOnClickListener {
-            var mainActivity = activity as MainActivity
-            mainActivity.buscaFoto()
+            (activity as MainActivity).buscaFoto()
         }
 
 
     }
 
+    private fun buscarAvaliacoes() {
+        var profissional = (activity as MainActivity).profissional
+        var retrofitImpl = RetrofitImpl()
+        retrofitImpl.responseApi = this@AvaliacoesFragment
+        retrofitImpl.avaliacoesProfissional(profissional.id, profissional.meta.toInt())
 
-    override fun onStart() {
-        super.onStart()
-        carregaFoto(getFotoShared())
     }
 
-    fun carregaFoto(foto: String) {
-        picasso.load(foto)
+    override fun getResponse(boolean: Boolean, any: Any?, key: KeysResponseAPI) {
+
+        if (boolean) {
+            any.let {
+                carregarInformacoes(any as List<Avaliacao>)
+            }
+        } else {
+            mandaToast("Algum Erro ao Carregar!")
+            Log.i("List<Avaliacao>", any.toString())
+        }
+    }
+
+    private fun mandaToast(msg: String) {
+        Toast.makeText(activity!!, msg, Toast.LENGTH_SHORT).show()
+    }
+
+
+    private lateinit var profissional: Profissional
+
+    override fun onResume() {
+        super.onResume()
+        profissional = (activity as MainActivity).profissional
+        carregaFoto()
+
+    }
+
+    fun carregaFoto() {
+        Picasso.get().load(profissional.foto)
                 .placeholder(R.drawable.boy)
-                .error(R.drawable.boy).into(imgProfissional)
+                .error(R.drawable.boy)
+                .into(imgProfissional)
     }
 
 
     fun carregarInformacoes(avaliacoes: List<Avaliacao>) {
 
 
-        val recyclerView = avaliacoes_list_recyclerview
-
-        recyclerView.adapter = AvaliacaoAdapter(avaliacoes, this@AvaliacoesFragment.context!!)
+        avaliacoes_list_recyclerview
+                .adapter = AvaliacaoAdapter(avaliacoes, this@AvaliacoesFragment.context!!)
 
         val layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-        recyclerView.layoutManager = layoutManager
+        avaliacoes_list_recyclerview
+                .layoutManager = layoutManager
 
     }
 
-    fun score(profissionalId: Int, meta: Int) {
-        PermissionUtils.api.scoreProfissionalAvaliacao(profissionalId, meta)
-                .enqueue(object : Callback<List<Avaliacao>> {
-                    override fun onResponse(call: Call<List<Avaliacao>>?, response: Response<List<Avaliacao>>?) {
-                        if (this@AvaliacoesFragment.isVisible == true) {
-                            this@AvaliacoesFragment.carregarInformacoes(response?.body() as List<Avaliacao>)
-                        }
-
-                    }
-
-                    override fun onFailure(call: Call<List<Avaliacao>>?, t: Throwable?) {
-
-
-                    }
-                })
-
+    fun sendUrl(foto: String) {
+        carregaFoto()
     }
 
 

@@ -24,27 +24,6 @@ import java.util.ArrayList
  * Created by Joao .
  */
 object PermissionUtils {
-
-
-    var okHttpClient = OkHttpClient.Builder()
-            .addNetworkInterceptor(StethoInterceptor())
-            .build()
-
-
-    var gson = GsonBuilder()
-            .setLenient()
-
-            .create()
-
-    val retrofit = Retrofit.Builder()
-            .baseUrl("http://api.14mob.com")
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-
-            .build()
-
-    val api = retrofit.create<RetroFitRestAPI>(RetroFitRestAPI::class.java!!)
-
     //Solicita as permissoes
 
     fun validate(activity: Activity, requestCode: Int, vararg permissions: String): Boolean {
@@ -69,17 +48,6 @@ object PermissionUtils {
         return false
     }
 
-    fun atualizaToken(cpf: String,token: String){
 
-
-        api.sendTokenProfissional(cpf,token)
-                .enqueue(object : Callback<Profissional> {
-                    override fun onResponse(call: Call<Profissional>?, response: Response<Profissional>?) {
-                    }
-
-                    override fun onFailure(call: Call<Profissional>?, t: Throwable?) {
-                    }
-                })
-    }
 
 }
