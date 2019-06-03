@@ -45,8 +45,7 @@ class QuizFragment : Fragment(), RetrofitImpl.Iresponse, RespostaAdapter.OnItemC
     fun carregarInformacoes(quiz: Quiz) {
 
         if (quiz.id == 1) {
-            pergunta.text = "Sem Quizz..."
-            quiz_resposta_list_recyclerview.visibility = View.GONE
+            defautFragment()
             return
         }
 

@@ -72,10 +72,10 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/colorPrimaryDark"
-            android:fontFamily="@font/debussy"
+            android:fontFamily="@font/debussyfont"
             android:hint="Digite o CPF"
             android:textSize="15sp"
-            android:inputType="text"
+            android:inputType="number"
             android:textAlignment="center" />
     </android.support.design.widget.TextInputLayout>
 
