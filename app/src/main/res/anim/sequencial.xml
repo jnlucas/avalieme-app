@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="true">
+
+
+
+
+
+    <!-- Move animation-->
+    <translate
+        android:duration="500"
+        android:fillAfter="true"
+        android:fromXDelta="0%p"
+        android:startOffset="250"
+        android:toXDelta="50%p"
+        android:toYDelta="40%p"/>
+    <translate
+        android:duration="500"
+        android:fillAfter="true"
+        android:fromYDelta="0%p"
+        android:startOffset="500"
+        android:toYDelta="40%p"
+        android:toXDelta="-50%p"/>
+    <translate
+        android:duration="500"
+        android:fillAfter="true"
+        android:fromXDelta="0%p"
+        android:startOffset="750"
+        android:toXDelta="-50%p"
+        android:toYDelta="-40%p"/>
+    <translate
+        android:duration="500"
+        android:fillAfter="true"
+        android:fromYDelta="0%p"
+        android:startOffset="1000"
+        android:toYDelta="-40%p"
+        android:toXDelta="50%p"/>
+
+    <!-- Rotate 360 degrees animation-->
+    <rotate
+        android:duration="1000"
+        android:fromDegrees="0"
+        android:fillAfter="true"
+        android:interpolator="@android:anim/cycle_interpolator"
+        android:pivotX="40%"
+        android:pivotY="40%"
+        android:startOffset="1900"
+        android:toDegrees="360" />
+       <!-- android:repeatCount="infinite"
+        android:repeatMode="restart" -->
+
+
+</set>

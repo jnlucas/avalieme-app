@@ -96,7 +96,7 @@ class QuizFragment : Fragment(), RetrofitImpl.Iresponse, RespostaAdapter.OnItemC
     }
 
     fun enviarResposta(resposta: Resposta) {
-        retrofitImpl.enviarRespostaQuizz(profissional.id.toString(), resposta.perguntaId.toString())
+        retrofitImpl.enviarRespostaQuizz(profissional.id.toString(), resposta.id.toString())
     }
 
 }
