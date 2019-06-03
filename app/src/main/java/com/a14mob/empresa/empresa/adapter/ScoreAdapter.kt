@@ -12,6 +12,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import com.a14mob.empresa.empresa.R
 import com.a14mob.empresa.empresa.entity.Score
@@ -30,6 +32,9 @@ class ScoreAdapter(private val scores: List<Score>, private val context: Context
         val score = scores[position]
         holder?.onclick(context, position)
 
+        holder.itemView.startAnimation(AnimationUtils.loadAnimation( context, R.anim.animacao_fragment_out))
+
+
         holder?.let {
             it.profissional.text = score.profissional
             it.pontos.text = score.meta.toString() + "/" + score.pontos.toString()
@@ -42,8 +47,8 @@ class ScoreAdapter(private val scores: List<Score>, private val context: Context
 
 
         Picasso.get().load(score.foto)
-                .placeholder(R.drawable.boy)
-                .error(R.drawable.boy)
+                .placeholder(R.drawable.ic_person)
+                .error(R.drawable.ic_person)
                 .into(holder.itemView.foto)
 
         //holder.itemView.customProgress.setProgress(progresso,true)
@@ -55,6 +60,9 @@ class ScoreAdapter(private val scores: List<Score>, private val context: Context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val view = LayoutInflater.from(context).inflate(R.layout.score_item, parent, false)
+
+
+
         return ViewHolder(view)
     }
 
@@ -99,7 +107,7 @@ class ScoreAdapter(private val scores: List<Score>, private val context: Context
             val imagem = itemView.foto
             val posicao = itemView.posicao
 
-            itemView.customProgress.progress = 100
+            //itemView.customProgress.progress = 100
             pontos.text = score.profissional
             pontos.text = score.pontos.toString()
 

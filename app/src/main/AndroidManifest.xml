@@ -4,10 +4,9 @@
     package="com.a14mob.empresa.empresa">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
 
 
     <uses-feature
@@ -21,22 +20,25 @@
         android:roundIcon="@mipmap/ic_launcher_avalieme_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity">
-
-
-
-
-
+        <activity android:name=".SplashActivity"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" android:screenOrientation="portrait" />
-        <activity android:name=".LoginActivity" android:screenOrientation="portrait"></activity>
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_key"/>
-        <meta-data android:name="com.google.android.gms.version"
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <meta-data
@@ -46,19 +48,18 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <service android:name=".firebase.fcm.MeuFirebaseInstanceIdService" >
+        <service android:name=".firebase.fcm.MeuFirebaseInstanceIdService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
 
         </service>
 
-        <service android:name=".firebase.fcm.MeuFirebaseMessagingService" >
+        <service android:name=".firebase.fcm.MeuFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
 
 
     </application>

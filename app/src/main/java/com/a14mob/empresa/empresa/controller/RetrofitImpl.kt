@@ -1,7 +1,5 @@
 package com.a14mob.empresa.empresa.controller
 
-import android.util.Log
-import android.widget.Toast
 import com.a14mob.empresa.empresa.entity.*
 import okhttp3.MultipartBody
 import retrofit2.Call

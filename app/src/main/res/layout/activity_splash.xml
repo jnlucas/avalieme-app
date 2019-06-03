@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_activities"
     tools:context=".SplashActivity">
 
     <ImageView
         android:id="@+id/ivLogo"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/logo_inteiro"
-        android:background="#fff"
+        app:srcCompat="@drawable/logo_app"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

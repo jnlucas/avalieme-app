@@ -3,9 +3,14 @@ package com.a14mob.empresa.empresa
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.Toast
 import com.a14mob.empresa.empresa.entity.Profissional
 import com.facebook.stetho.Stetho
 import kotlinx.android.synthetic.main.activity_login.*
@@ -18,6 +23,8 @@ class LoginActivity : AppCompatActivity(), RetrofitImpl.Iresponse {
 
 
     var fieldCpf: String = ""
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +40,60 @@ class LoginActivity : AppCompatActivity(), RetrofitImpl.Iresponse {
             }
 
         })
+
+
+
+        cpf.visibility = View.GONE
+        login.visibility = View.GONE
+        imageView.visibility = View.GONE
+
+
+        var animacaoIv = AnimationUtils.loadAnimation( this@LoginActivity, R.anim.sequencial)
+
+        animacaoIv.setAnimationListener(object : Animation.AnimationListener{
+            override fun onAnimationRepeat(animation: Animation?) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                login.visibility = View.VISIBLE
+                login.clearAnimation()
+                login.startAnimation(AnimationUtils.loadAnimation( this@LoginActivity, R.anim.abc_slide_in_bottom))
+
+
+                login.animation.setAnimationListener(object : Animation.AnimationListener{
+                    override fun onAnimationRepeat(animation: Animation?) {}
+                    override fun onAnimationEnd(animation: Animation?) {
+                        cpf.visibility = View.VISIBLE
+                        cpf.clearAnimation()
+                        cpf.startAnimation(AnimationUtils.loadAnimation( this@LoginActivity, R.anim.abc_slide_in_top))
+                        cpf.requestFocus()
+
+                    }
+                    override fun onAnimationStart(animation: Animation?) {
+
+                    }
+
+                })
+
+
+
+
+
+            }
+
+            override fun onAnimationStart(animation: Animation?) {
+                imageView.visibility = View.VISIBLE
+            }
+
+        })
+
+
+        imageView!!.clearAnimation()
+        imageView!!.startAnimation(animacaoIv)
+
+
+
 
         Stetho.initializeWithDefaults(this)
 
@@ -61,24 +122,15 @@ class LoginActivity : AppCompatActivity(), RetrofitImpl.Iresponse {
 
         Hawk.init(applicationContext).build()
 
-//        val intent = Intent(this,MainActivity::class.java)
-//        intent.putExtra("cpf",fieldCpf.toString());
-//
-//        val editor = getSharedPreferences("PROFISSIONAL", MODE_PRIVATE).edit()
-//        editor.putString("nome", response.nome)
-//        editor.putString("meta", response.meta)
-//        editor.putString("profissionalId", response.id.toString())
-//        editor.putString("foto", response.foto.toString())
-//
-//        editor.putString("cpf",fieldCpf)
-//
-//        editor.apply()
-
         Hawk.put("profissional", profissional)
         Hawk.put("CPF", fieldCpf)
         startActivity(intent)
 
+        Handler().postDelayed({defautUI()},2000)
 
+
+
+        Toast.makeText(this@LoginActivity,"Bem vindo, ${profissional.nome} !",Toast.LENGTH_SHORT).show()
 
 
         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
@@ -108,7 +160,6 @@ class LoginActivity : AppCompatActivity(), RetrofitImpl.Iresponse {
     }
 
     private fun defautUI() {
-        msgErro.text = "Profissional não encontrado!"
         login.text = "Entrar"
         login.isClickable = true
         cpf.editText?.isEnabled = true

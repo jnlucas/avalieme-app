@@ -20,10 +20,25 @@ import com.orhanobut.hawk.Hawk
 
 class RespostaAdapter(private val respostas: List<Resposta>, var context: Context) : RecyclerView.Adapter<RespostaAdapter.ViewHolder>() {
 
+
+    interface OnItemClickListener {
+        fun OnClick(resposta: Resposta)
+    }
+
+    lateinit var mClick: OnItemClickListener
+
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val resposta = respostas[position]
 
-        holder?.onclick(context, position, resposta)
+
+
+        holder.itemView.setOnClickListener {
+            if (mClick != null) {
+                mClick.OnClick(resposta)
+            }
+        }
+
 
 
         holder?.let {
@@ -38,47 +53,14 @@ class RespostaAdapter(private val respostas: List<Resposta>, var context: Contex
     }
 
     override fun getItemCount(): Int {
-
-
         return respostas.size
     }
 
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), RetrofitImpl.Iresponse {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         val descricao = itemView.descricao
         lateinit var context: Context
-
-        fun onclick(context: Context, position: Int, resp: Resposta) {
-            this.context = context
-
-            val inflater = LayoutInflater.from(context)
-
-
-            descricao.setOnClickListener {
-
-                enviarResposta(resp)
-
-
-                //listener.onItemClicked()
-
-            }
-        }
-
-
-        override fun getResponse(boolean: Boolean, any: Any?, key: KeysResponseAPI) {
-            if (boolean) {
-                Toast.makeText(context, "Obrigado, sua avaliação é muito importante para nós!", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-
-        fun enviarResposta(resposta: Resposta) {
-            var profissional: Profissional = Hawk.get("Profissional")
-            var retrofitImpl = RetrofitImpl()
-            retrofitImpl.responseApi = this@ViewHolder
-            retrofitImpl.enviarRespostaQuizz(profissional.id.toString(), resposta.perguntaId.toString())
-        }
 
 
         fun bindView(resposta: Resposta) {

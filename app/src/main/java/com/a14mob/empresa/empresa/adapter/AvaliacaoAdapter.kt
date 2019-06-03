@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView.Adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import com.a14mob.empresa.empresa.R
 import com.a14mob.empresa.empresa.entity.Avaliacao
 
@@ -20,10 +21,14 @@ class AvaliacaoAdapter(private val avaliacoes: List<Avaliacao>, private val cont
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val avaliacao = avaliacoes[position]
 
+
+        holder.itemView.startAnimation(AnimationUtils.loadAnimation( context, R.anim.animacao_fragment_out))
+
+
         holder?.let {
-            it.nomeAvaliador.text = "Avaliador: " + avaliacao.superiorImediato
-            it.observacao.text = avaliacao.observacao.toString()
-            it.pontuacao.text = avaliacao.pontos.toString()
+            it.nomeAvaliador.text = avaliacao.superiorImediato
+            it.observacao.text = avaliacao.observacao
+            it.ratingBar.rating = avaliacao.pontos
 
         }
     }
@@ -61,7 +66,7 @@ class AvaliacaoAdapter(private val avaliacoes: List<Avaliacao>, private val cont
             nomeAvaliador.text = avaliacao.superiorImediato.toString()
             observacao.text = avaliacao.observacao.toString()
             pontuacao.text = avaliacao.pontos.toString()
-            ratingBar.rating = avaliacao.pontos.toFloat()
+            ratingBar.rating = avaliacao.pontos
         }
 
     }

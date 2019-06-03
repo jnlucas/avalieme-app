@@ -1,5 +1,6 @@
 package com.a14mob.empresa.empresa
 
+import android.app.Activity
 import android.content.Context
 import android.location.LocationManager
 import android.support.v7.app.AppCompatActivity
@@ -16,9 +17,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import android.content.Intent
 import android.graphics.Bitmap
-import android.media.Image
-import android.os.Parcel
 import android.provider.MediaStore
+import android.support.v4.app.FragmentTransaction
 import android.util.Log
 import android.widget.Toast
 import com.a14mob.empresa.empresa.controller.KeysResponseAPI
@@ -39,12 +39,17 @@ class MainActivity() : AppCompatActivity(), RetrofitImpl.Iresponse {
 
 
     private val PICK_IMAGE = 100
+    private val CAPTURE_IMAGE = 101
 
     lateinit var profissional: Profissional
 
     lateinit var avalicaoFragment: AvaliacoesFragment
     lateinit var scoreFragment: ScoreFragment
     lateinit var quizFragment: QuizFragment
+
+
+    lateinit var transaction: FragmentTransaction
+
 
     var retrofitImpl = RetrofitImpl().apply {
         this.responseApi = this@MainActivity
@@ -95,21 +100,18 @@ class MainActivity() : AppCompatActivity(), RetrofitImpl.Iresponse {
         quizFragment = QuizFragment()
 
         setContentView(R.layout.activity_main)
-        this.changeFragment(ScoreFragment());
+        this.changeFragment(scoreFragment)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
         retrofitImpl.atualizaToken(Hawk.get("CPF"), FirebaseInstanceId.getInstance().token.toString())
-        Hawk.delete("CPF")
-
-
-
 
 
         val service = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val enable = service.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
         PermissionUtils.validate(this@MainActivity, 1,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.CAMERA
+        )
 
 
     }
@@ -119,7 +121,15 @@ class MainActivity() : AppCompatActivity(), RetrofitImpl.Iresponse {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE)
+        startActivityForResult(Intent.createChooser(intent, "Escolha a foto"), PICK_IMAGE)
+    }
+
+
+    fun tirarFoto() {
+        val intent = Intent()
+        intent.action = MediaStore.ACTION_IMAGE_CAPTURE
+        startActivityForResult(Intent.createChooser(intent, "Foto"), CAPTURE_IMAGE)
+
     }
 
 
@@ -137,27 +147,36 @@ class MainActivity() : AppCompatActivity(), RetrofitImpl.Iresponse {
 
                 //avalicaoFragment?.setFoto(bitmap)
 
-                val f = File(getCacheDir(), "upload")
-                f.createNewFile()
-
-                var bos = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos)
-                var bitmapdata = bos.toByteArray()
-                var fos = FileOutputStream(f)
-                fos.write(bitmapdata)
-                fos.flush()
-                fos.close()
-
-                val reqFile = RequestBody.create(MediaType.parse("image/*"), f)
-                val body = MultipartBody.Part.createFormData("upload", f.getName(), reqFile)
-
-                retrofitImpl.enviarFoto(body)
-
+                preparaEEnviaFoto(bitmap)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
 
         }
+
+        if (requestCode == CAPTURE_IMAGE && resultCode == Activity.RESULT_OK) {
+            val bitmap = data?.extras?.get("data") as Bitmap
+            preparaEEnviaFoto(bitmap)
+
+        }
+    }
+
+    private fun preparaEEnviaFoto(bitmap: Bitmap?) {
+        val f = File(getCacheDir(), "upload")
+        f.createNewFile()
+
+        var bos = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos)
+        var bitmapdata = bos.toByteArray()
+        var fos = FileOutputStream(f)
+        fos.write(bitmapdata)
+        fos.flush()
+        fos.close()
+
+        val reqFile = RequestBody.create(MediaType.parse("image/*"), f)
+        val body = MultipartBody.Part.createFormData("upload", f.getName(), reqFile)
+
+        retrofitImpl.enviarFoto(body)
     }
 
     override fun getResponse(boolean: Boolean, any: Any?, key: KeysResponseAPI) {
@@ -179,10 +198,12 @@ class MainActivity() : AppCompatActivity(), RetrofitImpl.Iresponse {
             KeysResponseAPI.envioUrlFoto -> {
                 if (boolean) {
                     any?.let {
-                        var profissional: Profissional = Hawk.get("profissional")
+                        //var profissional: Profissional = Hawk.get("profissional")
                         profissional = it as Profissional
                         Hawk.put("profissional", profissional)
-                        avalicaoFragment?.sendUrl(profissional.foto)
+                        if (isShowingFragment(avalicaoFragment)) {
+                            avalicaoFragment?.atualizarFoto()
+                        }
 
                     }
                 }
@@ -190,6 +211,13 @@ class MainActivity() : AppCompatActivity(), RetrofitImpl.Iresponse {
         }
 
     }
+
+
+    fun isShowingFragment(fragment: Fragment): Boolean {
+        return fragment.isAdded() && fragment.isVisible() && fragment.getUserVisibleHint()
+
+    }
+
 
     private fun mandaToast(msg: String) {
         Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
@@ -207,9 +235,12 @@ class MainActivity() : AppCompatActivity(), RetrofitImpl.Iresponse {
      * altera o fragment
      */
     fun changeFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
+        transaction = supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.animacao_fragment_out, R.anim.animacao_fragment_in)
                 .replace(R.id.frame, fragment)
                 .commit()
+
+
     }
 
 

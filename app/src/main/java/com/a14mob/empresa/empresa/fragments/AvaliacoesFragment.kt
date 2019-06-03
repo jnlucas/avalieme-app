@@ -1,7 +1,11 @@
 package com.a14mob.empresa.empresa.fragments
 
+import android.app.Activity
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_avaliacoes.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 
 /**
@@ -32,31 +37,9 @@ import retrofit2.Response
  */
 class AvaliacoesFragment : Fragment(), RetrofitImpl.Iresponse {
 
-    //    var nome: String = ""
-//    var profissionalId: Int = 0
-//    var meta: Int = 0
-//    var foto: String = ""
-//    var cpf = ""
-//    lateinit var prefs: SharedPreferences
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
-
-//        prefs = inflater.context.getSharedPreferences("PROFISSIONAL", Context.MODE_PRIVATE)
-//
-//        profissionalId = prefs.getString("profissionalId", null).toInt()
-//
-//        meta = prefs.getString("meta", null).toInt()
-//
-//        nome = prefs.getString("nome", null).toString()
-
-        //carregaFoto()
-
-//        cpf = prefs.getString("cpf", null).toString()
-
-
         return inflater?.inflate(R.layout.fragment_avaliacoes, container, false)
     }
 
@@ -71,6 +54,11 @@ class AvaliacoesFragment : Fragment(), RetrofitImpl.Iresponse {
 
         imgProfissional.setOnClickListener {
             (activity as MainActivity).buscaFoto()
+        }
+
+
+        btFoto.setOnClickListener {
+            (activity as MainActivity).tirarFoto()
         }
 
 
@@ -105,32 +93,29 @@ class AvaliacoesFragment : Fragment(), RetrofitImpl.Iresponse {
 
     override fun onResume() {
         super.onResume()
-        profissional = (activity as MainActivity).profissional
         carregaFoto()
 
     }
 
     fun carregaFoto() {
+        profissional = (activity as MainActivity).profissional
         Picasso.get().load(profissional.foto)
-                .placeholder(R.drawable.boy)
-                .error(R.drawable.boy)
+                .placeholder(R.drawable.ic_person)
+                .error(R.drawable.ic_person)
                 .into(imgProfissional)
     }
 
 
     fun carregarInformacoes(avaliacoes: List<Avaliacao>) {
-
-
-        avaliacoes_list_recyclerview
-                .adapter = AvaliacaoAdapter(avaliacoes, this@AvaliacoesFragment.context!!)
-
-        val layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-        avaliacoes_list_recyclerview
-                .layoutManager = layoutManager
+        if ((activity as MainActivity).isShowingFragment(this@AvaliacoesFragment)) {
+            avaliacoes_list_recyclerview.layoutManager = LinearLayoutManager(activity?.applicationContext)
+            avaliacoes_list_recyclerview.adapter = AvaliacaoAdapter(avaliacoes, this@AvaliacoesFragment.context!!)
+        }
 
     }
 
-    fun sendUrl(foto: String) {
+
+    fun atualizarFoto() {
         carregaFoto()
     }
 

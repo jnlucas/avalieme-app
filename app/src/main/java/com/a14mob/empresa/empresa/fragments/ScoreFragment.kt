@@ -16,6 +16,7 @@ import com.a14mob.empresa.empresa.entity.Profissional
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.util.Log
 import android.widget.TextView
@@ -55,28 +56,9 @@ class ScoreFragment : Fragment(), RetrofitImpl.Iresponse {
 
     lateinit var profissional: Profissional
 
-//    var nome: String = ""
-//
-//    var cpf: String = ""
-//
-//    var profissionalId: Int = 0
-//
-//    var meta: Int = 0
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-
-
-//        val prefs = inflater.context.getSharedPreferences("PROFISSIONAL", MODE_PRIVATE)
-//
-//        profissionalId = prefs.getString("profissionalId", null).toInt()
-//
-//        meta = prefs.getString("meta", null).toInt()
-//
-//        nome = prefs.getString("nome", null).toString()
-//
-//        cpf = prefs.getString("cpf", null).toString()
 
         profissional = (activity as MainActivity).profissional
 
@@ -97,7 +79,6 @@ class ScoreFragment : Fragment(), RetrofitImpl.Iresponse {
         metaPontos.text = "Ranking da equipe "
 
         score(profissional.id, profissional.meta.toInt())
-
 
 
     }
@@ -124,11 +105,10 @@ class ScoreFragment : Fragment(), RetrofitImpl.Iresponse {
 
     fun carregarInformacoes(scores: List<Score>) {
 
-        val recyclerView = score_list_recyclerview
-        recyclerView.adapter = ScoreAdapter(scores, this@ScoreFragment.context!!)
-
-        val layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-        recyclerView.layoutManager = layoutManager
+        if ((activity as MainActivity).isShowingFragment(this@ScoreFragment)) {
+            score_list_recyclerview.layoutManager = LinearLayoutManager(activity?.applicationContext)
+            score_list_recyclerview.adapter = ScoreAdapter(scores, this@ScoreFragment.context!!)
+        }
 
 
     }

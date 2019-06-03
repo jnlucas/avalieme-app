@@ -5,20 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.QuizFragment"
-    tools:layout_editor_absoluteY="25dp">
+    android:background="@drawable/bg_activities">
 
     <!-- TODO: Update blank fragment layout -->
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha=".1"
-        android:background="@drawable/bgactivity"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
@@ -26,25 +15,25 @@
         style="@style/Widget.AppCompat.TextView.SpinnerItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/she_smiles"
         android:text="aguarde ..."
-        android:textColor="@color/colorPrimary"
-        android:textSize="18dp"
+
+        android:textAllCaps="true"
+        android:textColor="@color/colorAccent"
+        android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/quiz_resposta_list_recyclerview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quiz"
-        app:layout_constraintVertical_bias="0.591" />
+        app:layout_constraintTop_toBottomOf="@+id/quiz" />
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/quiz_resposta_list_recyclerview"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -61,12 +50,33 @@
         android:layout_height="50dp"
         android:background="@color/colorAccent"
         android:gravity="center"
-        android:text="Quiz!?"
+        android:text="Quizz!?"
+        android:fontFamily="@font/she_smiles"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvDefaultQuizz"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/she_smiles"
+        android:gravity="center"
+        android:text="obrigado, más não há quizz até o momento!!!"
+        android:textAllCaps="true"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/quiz"
+        app:layout_constraintVertical_bias="0.501" />
 
 </android.support.constraint.ConstraintLayout>
