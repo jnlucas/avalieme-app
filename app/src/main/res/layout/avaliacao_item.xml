@@ -32,16 +32,15 @@
 
 
             <TextView
-                android:layout_gravity="center"
                 android:id="@+id/nomeAvaliador"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/edt_bg"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:fontFamily="@font/debussy"
-                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:textColor="@color/cardview_dark_background"
                 android:textSize="20dp"
-                android:textStyle="bold"
+                android:textStyle="italic"
                 tools:text="avalidador" />
 
 
@@ -71,14 +70,14 @@
             android:id="@+id/pontuacao"
             android:layout_width="50sp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/she_smiles"
             android:gravity="center"
             android:text="Nota"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@android:color/holo_orange_dark"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/ratingBar"
             app:layout_constraintEnd_toEndOf="@+id/ratingBar"
@@ -90,8 +89,9 @@
             style="@style/Widget.AppCompat.RatingBar.Indicator"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:isIndicator="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pontuacao" />

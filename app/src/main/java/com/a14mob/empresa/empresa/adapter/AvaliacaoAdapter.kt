@@ -28,6 +28,7 @@ class AvaliacaoAdapter(private val avaliacoes: List<Avaliacao>, private val cont
         holder?.let {
             it.nomeAvaliador.text = avaliacao.superiorImediato
             it.observacao.text = avaliacao.observacao
+            it.pontuacao.text = avaliacao.pontos.toString()
             it.ratingBar.rating = avaliacao.pontos
 
         }
